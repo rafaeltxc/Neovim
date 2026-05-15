@@ -2,6 +2,14 @@
 
 Modular, Lazy.nvim-based Neovim configuration designed for multi-language development, with extra polish for LSP, DAP, testing, and formatting.
 
+<br>
+
+<div align="center">
+ <img src="./content/demo.gif" alt="demo">
+</div>
+
+<br>
+
 ### Contents
 
  - init.lua — Entrypoint to load lua/ tree and setup nvim.
