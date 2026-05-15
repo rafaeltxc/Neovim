@@ -84,7 +84,6 @@ local M = {
 	-- Refactor
 	{ "<leader>r", group = "Refactoring" },
 	{ "<leader>rr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename Variable" },
-	{ "<leader>rr", "<cmd>lua vim.lsp.buf.quickfix()<CR>", desc = "Rename Variable" },
 	{ "<leader>ra", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code Actions" },
 	{
 		"<leader>ro",

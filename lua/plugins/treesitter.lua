@@ -1,49 +1,42 @@
 local M = {
-	"nvim-treesitter/nvim-treesitter",
-	version = false,
-	build = ":TSUpdate",
-	event = { "VeryLazy" },
-	init = function(plugin)
-		require("lazy.core.loader").add_to_rtp(plugin)
-		require("nvim-treesitter.query_predicates")
-	end,
-	dependencies = {
-		{
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			config = function()
-				local move = require("nvim-treesitter.textobjects.move")
-				local configs = require("nvim-treesitter.configs")
-				for name, fn in pairs(move) do
-					if name:find("goto") == 1 then
-						move[name] = function(q, ...)
-							if vim.wo.diff then
-								local config = configs.get_module("textobjects.move")[name]
-								for key, query in pairs(config or {}) do
-									if q == query and key:find("[%]%[][cC]") then
-										vim.cmd("normal! " .. key)
-										return
-									end
-								end
-							end
+  "nvim-treesitter/nvim-treesitter",
+  version = false,
+  build = ":TSUpdate",
+  event = { "VeryLazy" },
+  init = function(plugin)
+    require("lazy.core.loader").add_to_rtp(plugin)
+  end,
+  dependencies = {
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
+  },
 
-							return fn(q, ...)
-						end
-					end
-				end
-			end,
-		},
-	},
-	opts = {
-		highlight = { enable = true },
-		indent = { enable = true },
-		ensure_installed = require("utils.treesitter-ensure-installed"),
-		auto_install = true,
-	},
+  opts = {
+    ensure_installed = require("utils.treesitter-ensure-installed"),
+    auto_install = true,
+  },
 
-	config = function(_, opts)
-		local tst = require("nvim-treesitter.configs")
-		tst.setup(opts)
-	end,
+  config = function(_, opts)
+    local ts = require("nvim-treesitter")
+
+    ts.setup({
+      auto_install = opts.auto_install,
+    })
+
+    if type(opts.ensure_installed) == "table" then
+      ts.install(opts.ensure_installed)
+    end
+
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("treesitter_start", { clear = true }),
+      callback = function(args)
+        if vim.treesitter.language.get_lang(vim.bo[args.buf].filetype) then
+          pcall(vim.treesitter.start, args.buf)
+        end
+      end,
+    })
+  end,
 }
 
 return M

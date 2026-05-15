@@ -81,13 +81,20 @@ keymap("i", "<C-b>", "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", opts)
 
 -- visual mode (only formats selection)
 vim.keymap.set("v", "<C-b>", function()
-	local start_pos = vim.fn.getpos("'<")
-	local end_pos = vim.fn.getpos("'>")
-	vim.lsp.buf.format({
-		async = true,
-		range = {
-			["start"] = { start_pos[2], start_pos[3] - 1 },
-			["end"] = { end_pos[2], end_pos[3] - 1 },
-		},
-	})
+  local start_pos = vim.fn.getpos("'<")
+  local end_pos = vim.fn.getpos("'>")
+  vim.lsp.buf.format({
+    async = true,
+    range = {
+      ["start"] = { start_pos[2], start_pos[3] - 1 },
+      ["end"] = { end_pos[2], end_pos[3] - 1 },
+    },
+  })
 end, opts)
+
+-- Copy all matching lines
+vim.keymap.set('v', '<leader>a', ':CopyMatchedLines<CR>', {
+  noremap = true,
+  silent = true,
+  desc = "Copy all lines containing visual selection"
+})
