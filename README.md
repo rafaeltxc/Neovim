@@ -189,7 +189,7 @@ _plugins-keymaps.lua_ serves the purpose of storing keymaps that are meant to be
 
 Clone the repo:
 ```
-git clone https://github.com/rafaeltxc/nvim-config.git
+git clone https://github.com/rtxct/nvim-config.git
 cd nvim-config
 ```
 
